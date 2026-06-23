@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products - 7amo Store</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========== Header Navbar ========== -->
+  <header class="navbar">
+    <div class="container">
+      <div class="nav-row">
+        <a href="index.html" class="logo">
+          <span class="dash"></span>
+          7amo Store
+        </a>
+        
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="products.html" class="active">Products</a>
+          <a href="categories.html">Categories</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+
+        <div class="nav-right">
+          <div class="search-box">
+            <span data-icon="search" data-size="16"></span>
+            <input type="text" id="search-input" placeholder="Search products..." aria-label="Search products" oninput="filterAndRender()">
+          </div>
+
+          <a href="cart.html" class="icon-btn cart-btn" aria-label="Cart">
+            <span data-icon="cart" data-size="18"></span>
+            <span id="cart-badge-count" class="cart-badge hidden">0</span>
+          </a>
+
+          <!-- Dynamic User Auth Container -->
+          <div id="auth-nav-container">
+            <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+          </div>
+
+          <button class="icon-btn mobile-toggle" aria-label="Menu">
+            <span data-icon="menu" data-size="18"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+      <div class="container">
+        <a href="index.html">Home</a>
+        <a href="products.html" class="active">Products</a>
+        <a href="categories.html">Categories</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== Catalog Section ========== -->
+  <section class="section">
+    <div class="container">
+      <div style="margin-bottom: 48px;">
+        <span class="eyebrow">Catalog</span>
+        <h1 class="section-title">All Products</h1>
+        <p style="color: var(--text-muted); font-size: 15px;">Equip your training with the best athlete gear.</p>
+      </div>
+
+      <!-- Filters Toolbar -->
+      <div class="toolbar" style="background: var(--card); border: 1px solid var(--border); padding: 16px 24px; border-radius: var(--radius); margin-bottom: 32px;">
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; flex-grow: 1;">
+          <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
+            <select id="category-filter" class="filter-select" aria-label="Filter by Category" onchange="filterAndRender()">
+              <option value="">All Categories</option>
+              <!-- Loaded dynamically from safeStorage -->
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
+            <select id="sort-filter" class="filter-select" aria-label="Sort by" onchange="filterAndRender()">
+              <option value="newest">Newest Arrivals</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+        <div style="font-size: 14px; color: var(--text-muted); font-weight: 500;" id="products-count">
+          Showing 0 products
+        </div>
+      </div>
+
+      <!-- Skeleton Loading View (Active by default to simulate DB request) -->
+      <div id="skeleton-container" class="skeleton-grid">
+        <div class="skeleton-card">
+          <div class="skeleton-image skeleton-animate"></div>
+          <div class="skeleton-text skeleton-title skeleton-animate"></div>
+          <div class="skeleton-text skeleton-subtitle skeleton-animate"></div>
+          <div class="skeleton-text skeleton-price skeleton-animate" style="margin-top: 12px;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-image skeleton-animate"></div>
+          <div class="skeleton-text skeleton-title skeleton-animate"></div>
+          <div class="skeleton-text skeleton-subtitle skeleton-animate"></div>
+          <div class="skeleton-text skeleton-price skeleton-animate" style="margin-top: 12px;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-image skeleton-animate"></div>
+          <div class="skeleton-text skeleton-title skeleton-animate"></div>
+          <div class="skeleton-text skeleton-subtitle skeleton-animate"></div>
+          <div class="skeleton-text skeleton-price skeleton-animate" style="margin-top: 12px;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-image skeleton-animate"></div>
+          <div class="skeleton-text skeleton-title skeleton-animate"></div>
+          <div class="skeleton-text skeleton-subtitle skeleton-animate"></div>
+          <div class="skeleton-text skeleton-price skeleton-animate" style="margin-top: 12px;"></div>
+        </div>
+      </div>
+
+      <!-- Products Grid (Loaded dynamically) -->
+      <div id="products-container" class="product-grid hidden">
+        <!-- Loaded dynamically from safeStorage -->
+      </div>
+
+      <!-- Empty State View (hidden by default) -->
+      <div id="empty-container" class="empty-state hidden">
+        <div class="empty-icon" data-icon="box" data-size="40"></div>
+        <h4>No Products Yet</h4>
+        <p>The catalog is empty right now. Head to the dashboard to start adding your first products and they'll appear here instantly.</p>
+        <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap; justify-content:center;">
+          <a href="dashboard.html" class="btn btn-accent">Go to Dashboard</a>
+          <a href="categories.html" class="btn btn-outline">Browse Categories</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <span class="dash"></span>
+            7amo Store
+          </div>
+          <p>Performance sports equipment for everyday athletes — quality gear, straightforward shopping.</p>
+          <div class="social-row">
+            <a href="https://wa.me/201149519736" target="_blank" class="social-link" aria-label="WhatsApp" data-social="whatsapp"><span data-icon="whatsapp" data-size="17"></span></a>
+            <a href="https://www.facebook.com/mohamed.ibrahim.339565" class="social-link" aria-label="Facebook" data-social="facebook"><span data-icon="fb" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="Instagram" data-social="instagram"><span data-icon="ig" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="TikTok" data-social="tiktok"><span data-icon="tiktok" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="Twitter" data-social="twitter"><span data-icon="tw" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="YouTube" data-social="youtube"><span data-icon="youtube" data-size="17"></span></a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="cart.html">Cart</a>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Categories</h4>
+          <a href="categories.html">All Categories</a>
+          <a href="categories.html">New Arrivals</a>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Contact</h4>
+          <a href="contact.html">Contact Us</a>
+          <p style="font-size: 14px; margin-top: 12px; color: #94a3b8;">Fayoum, Egypt</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 7amo Store. All rights reserved.</span>
+        <span>Built for athletes, by athletes.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    let allProducts = [];
+    let categoriesList = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData().then(() => {
+        populateCategoryFilter();
+        
+        // Handle URL category filter
+        const urlParams = new URLSearchParams(window.location.search);
+        const catParam = urlParams.get('category');
+        if (catParam) {
+          document.getElementById('category-filter').value = catParam;
+        }
+
+        filterAndRender();
+        document.getElementById('skeleton-container').classList.add('hidden');
+      });
+    });
+
+    async function loadData() {
+      try {
+        allProducts = await apiFetch('/products');
+      } catch(e) {
+        allProducts = [];
+        console.error('Failed to load products', e);
+      }
+
+      try {
+        categoriesList = await apiFetch('/categories');
+      } catch(e) {
+        categoriesList = [];
+        console.error('Failed to load categories', e);
+      }
+    }
+
+    function populateCategoryFilter() {
+      const select = document.getElementById('category-filter');
+      select.innerHTML = '<option value="">All Categories</option>';
+      categoriesList.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat.name;
+        option.textContent = cat.name;
+        select.appendChild(option);
+      });
+    }
+
+    function filterAndRender() {
+      const searchVal = document.getElementById('search-input').value.toLowerCase();
+      const catVal = document.getElementById('category-filter').value;
+      const sortVal = document.getElementById('sort-filter').value;
+
+      let filtered = [...allProducts];
+
+      // Search filter
+      if (searchVal) {
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(searchVal) || p.sku.toLowerCase().includes(searchVal));
+      }
+
+      // Category filter
+      if (catVal) {
+        filtered = filtered.filter(p => p.category === catVal);
+      }
+
+      // Sorting
+      if (sortVal === 'price-low') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortVal === 'price-high') {
+        filtered.sort((a, b) => b.price - a.price);
+      } else {
+        // newest (reverse array order as added)
+        filtered.reverse();
+      }
+
+      renderProducts(filtered);
+    }
+
+    function renderProducts(products) {
+      const container = document.getElementById('products-container');
+      const empty = document.getElementById('empty-container');
+      const countEl = document.getElementById('products-count');
+
+      countEl.textContent = `Showing ${products.length} products`;
+
+      if (products.length === 0) {
+        container.classList.add('hidden');
+        empty.classList.remove('hidden');
+      } else {
+        container.classList.remove('hidden');
+        empty.classList.add('hidden');
+
+        container.innerHTML = '';
+        products.forEach(p => {
+          const price = Number(p.price || 0);
+          const thumbHtml = p.image
+            ? `<img src="${p.image}" alt="${escapeHtml(p.name)}" style="width:100%;height:100%;object-fit:cover;display:block;">`
+            : `<span data-icon="box" data-size="72"></span>`;
+
+          const role = getRole();
+          let actionButtons = '';
+          if (role === 'guest') {
+            actionButtons = `
+              <button class="btn btn-outline btn-sm btn-block" style="margin-top:4px;" onclick="window.location.href='product-detail.html?id=${p._id}'">
+                <span data-icon="eye" data-size="15"></span> View Details
+              </button>
+            `;
+          } else {
+            actionButtons = `
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:8px; padding:4px 8px;">
+                  <button onclick="decrementQty('${p._id}')" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:rgba(255,255,255,0.07);border:none;color:#fff;cursor:pointer;font-size:16px;font-weight:700;">−</button>
+                  <span id="qty-${p._id}" style="font-size:14px;font-weight:700;color:#fff;min-width:24px;text-align:center;">1</span>
+                  <button onclick="incrementQty('${p._id}')" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:rgba(255,255,255,0.07);border:none;color:#fff;cursor:pointer;font-size:16px;font-weight:700;">+</button>
+                </div>
+                <div style="display:flex; gap:8px;">
+                  <button class="btn btn-outline btn-sm" style="flex:1;" onclick="window.location.href='product-detail.html?id=${p._id}'">
+                    Details
+                  </button>
+                  <button class="btn btn-accent btn-sm" style="flex:1;" onclick="addProductToCart('${p._id}')">
+                    <span data-icon="cart" data-size="14"></span> Add
+                  </button>
+                </div>
+              </div>
+            `;
+          }
+
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          card.innerHTML = `
+            <div class="product-badge">Active</div>
+            <div class="product-thumb" style="${p.image ? 'padding:0;' : ''}">
+              ${thumbHtml}
+            </div>
+            <div class="product-body">
+              <div class="product-cat">${escapeHtml(p.category || 'Uncategorized')}</div>
+              <h3 class="product-name">${escapeHtml(p.name)}</h3>
+              <div class="product-rating">
+                <span data-icon="star" data-size="14"></span> 5.0 (verified)
+              </div>
+              <div class="product-price">$${price.toFixed(2)}</div>
+              <div class="product-actions">
+                ${actionButtons}
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+        // Trigger dynamic rendering of SVG icons inside catalog cards
+        renderInlineIcons();
+      }
+    }
+
+    function incrementQty(productId) {
+      const el = document.getElementById(`qty-${productId}`);
+      if (el) el.textContent = parseInt(el.textContent) + 1;
+    }
+
+    function decrementQty(productId) {
+      const el = document.getElementById(`qty-${productId}`);
+      if (el) {
+        const current = parseInt(el.textContent);
+        if (current > 1) el.textContent = current - 1;
+      }
+    }
+
+    function addProductToCart(id) {
+      const product = allProducts.find(p => p._id === id);
+      if (!product) return;
+
+      const qtyEl = document.getElementById(`qty-${id}`);
+      const qty = qtyEl ? parseInt(qtyEl.textContent, 10) : 1;
+      const price = Number(product.price || 0);
+
+      let cart = getCart();
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.quantity += qty;
+        existing.price = price;
+        existing.image = existing.image || product.image || '';
+      } else {
+        cart.push({
+          id: product._id,
+          name: product.name,
+          price,
+          sku: product.sku,
+          image: product.image || '',
+          quantity: qty
+        });
+      }
+      saveCart(cart);
+      // Reset qty display back to 1
+      if (qtyEl) qtyEl.textContent = '1';
+      showToast(`${qty}x ${product.name} added to cart!`);
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+  <div class="creator-credit"><span>Made by</span> <strong>Mohamed Ibrahim</strong></div>
+</body>
+</html>
+
+

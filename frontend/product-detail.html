@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - 7amo Store</title>
+  <meta name="description" content="View detailed information about this product on 7amo Store.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ===== Product Detail Page ===== */
+    .product-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .product-detail-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+    }
+
+    /* ---- Image Gallery ---- */
+    .detail-image-wrap {
+      position: sticky;
+      top: 100px;
+    }
+
+    .detail-main-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius-lg);
+      background: #0d131f;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #4b5563;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .detail-main-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .detail-main-img:hover img {
+      transform: scale(1.04);
+    }
+
+    .detail-img-badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: var(--accent);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 999px;
+      box-shadow: 0 0 12px var(--accent);
+      z-index: 2;
+    }
+
+    /* ---- Product Info Panel ---- */
+    .detail-info { display: flex; flex-direction: column; gap: 0; }
+
+    .detail-category {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .detail-name {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .detail-rating-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .detail-stars {
+      display: flex;
+      gap: 3px;
+      color: #fbbf24;
+    }
+
+    .detail-reviews {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .detail-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 24px;
+      padding: 20px;
+      background: rgba(34,197,94,0.05);
+      border: 1px solid rgba(34,197,94,0.15);
+      border-radius: var(--radius);
+    }
+
+    .detail-price {
+      font-size: 38px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .detail-old-price {
+      font-size: 20px;
+      font-weight: 600;
+      color: #475569;
+      text-decoration: line-through;
+    }
+
+    .detail-discount {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(34,197,94,0.12);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    .detail-description {
+      font-size: 15px;
+      color: #94a3b8;
+      line-height: 1.75;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* SKU / Stock row */
+    .detail-meta-row {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .detail-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .detail-meta-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #4b5563;
+    }
+
+    .detail-meta-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .stock-in { color: var(--accent); }
+    .stock-low { color: #f59e0b; }
+    .stock-out { color: #ef4444; }
+
+    /* Quantity + CTA */
+    .detail-qty-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .detail-qty-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .detail-qty-control {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .detail-qty-btn {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 700;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .detail-qty-btn:hover {
+      background: rgba(34,197,94,0.12);
+      color: var(--accent);
+    }
+
+    .detail-qty-display {
+      min-width: 52px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+
+    /* CTA Buttons */
+    .detail-cta {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .detail-cta .btn {
+      flex: 1;
+      padding: 16px;
+      font-size: 15px;
+    }
+
+    /* Features row */
+    .detail-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .detail-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      transition: var(--transition);
+    }
+
+    .detail-feature:hover {
+      background: rgba(34,197,94,0.05);
+      border-color: rgba(34,197,94,0.15);
+      color: #e2e8f0;
+    }
+
+    .detail-feature svg { color: var(--accent); flex-shrink: 0; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #4b5563;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumb a {
+      color: #64748b;
+      transition: color 0.2s;
+    }
+
+    .breadcrumb a:hover { color: var(--accent); }
+
+    .breadcrumb span { color: #fff; font-weight: 600; }
+
+    /* Skeleton */
+    .detail-skeleton { animation: pulse 1.5s infinite ease-in-out; }
+
+    /* Guest CTA box */
+    .guest-cta-box {
+      background: rgba(34,197,94,0.06);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .guest-cta-box p {
+      flex: 1;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    .guest-cta-box strong { color: #fff; display: block; margin-bottom: 4px; }
+
+    /* Error state */
+    .not-found-state {
+      text-align: center;
+      padding: 80px 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== Header Navbar ========== -->
+  <header class="navbar">
+    <div class="container">
+      <div class="nav-row">
+        <a href="index.html" class="logo">
+          <span class="dash"></span>
+          7amo Store
+        </a>
+
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="products.html" class="active">Products</a>
+          <a href="categories.html">Categories</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+
+        <div class="nav-right">
+          <div class="search-box">
+            <span data-icon="search" data-size="16"></span>
+            <input type="text" placeholder="Search products..." aria-label="Search">
+          </div>
+
+          <a href="cart.html" class="icon-btn cart-btn" aria-label="Cart">
+            <span data-icon="cart" data-size="18"></span>
+            <span id="cart-badge-count" class="cart-badge hidden">0</span>
+          </a>
+
+          <div id="auth-nav-container">
+            <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+          </div>
+
+          <button class="icon-btn mobile-toggle" aria-label="Menu">
+            <span data-icon="menu" data-size="18"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-menu">
+      <div class="container">
+        <a href="index.html">Home</a>
+        <a href="products.html" class="active">Products</a>
+        <a href="categories.html">Categories</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== Product Detail Section ========== -->
+  <section class="section">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        <a href="products.html">Products</a>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        <span id="breadcrumb-name">Loading...</span>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state">
+        <div class="product-detail-grid">
+          <div style="aspect-ratio:1/1; background:#131a26; border-radius:18px;" class="detail-skeleton"></div>
+          <div style="display:flex;flex-direction:column;gap:16px;padding-top:20px;">
+            <div style="height:14px;width:80px;background:#1e293b;border-radius:4px;" class="detail-skeleton"></div>
+            <div style="height:40px;width:85%;background:#1e293b;border-radius:8px;" class="detail-skeleton"></div>
+            <div style="height:40px;width:85%;background:#1e293b;border-radius:8px;" class="detail-skeleton"></div>
+            <div style="height:100px;background:#1e293b;border-radius:8px;margin-top:8px;" class="detail-skeleton"></div>
+            <div style="height:56px;background:#1e293b;border-radius:12px;margin-top:12px;" class="detail-skeleton"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Content (hidden until loaded) -->
+      <div id="product-content" class="hidden">
+        <div class="product-detail-grid">
+
+          <!-- Left: Image -->
+          <div class="detail-image-wrap">
+            <div class="detail-main-img" id="detail-img-wrap">
+              <span data-icon="box" data-size="100"></span>
+            </div>
+          </div>
+
+          <!-- Right: Info -->
+          <div class="detail-info">
+
+            <div class="detail-category" id="detail-category">Category</div>
+            <h1 class="detail-name" id="detail-name">Product Name</h1>
+
+            <!-- Rating Row -->
+            <div class="detail-rating-row">
+              <div class="detail-stars" id="detail-stars">
+                <!-- Stars injected by JS -->
+              </div>
+              <span class="detail-reviews" id="detail-reviews">0 reviews</span>
+            </div>
+
+            <!-- Price -->
+            <div class="detail-price-row">
+              <div class="detail-price" id="detail-price">$0.00</div>
+              <div class="detail-old-price hidden" id="detail-old-price"></div>
+              <div class="detail-discount hidden" id="detail-discount"></div>
+            </div>
+
+            <!-- Description -->
+            <p class="detail-description" id="detail-description">Loading description...</p>
+
+            <!-- Meta -->
+            <div class="detail-meta-row">
+              <div class="detail-meta-item">
+                <span class="detail-meta-label">SKU</span>
+                <span class="detail-meta-value" id="detail-sku">—</span>
+              </div>
+              <div class="detail-meta-item">
+                <span class="detail-meta-label">Category</span>
+                <span class="detail-meta-value" id="detail-cat-meta">—</span>
+              </div>
+              <div class="detail-meta-item">
+                <span class="detail-meta-label">Availability</span>
+                <span class="detail-meta-value" id="detail-stock">—</span>
+              </div>
+            </div>
+
+            <!-- Guest CTA (shown only when not logged in) -->
+            <div id="guest-cta-box" class="guest-cta-box hidden">
+              <span data-icon="user" data-size="22" style="color:var(--accent);flex-shrink:0;"></span>
+              <div>
+                <strong>Login to add items to your cart</strong>
+                <p>Create an account or sign in to start shopping.</p>
+              </div>
+              <a href="login.html" class="btn btn-accent btn-sm">Login</a>
+            </div>
+
+            <!-- Logged-in: Qty + CTA -->
+            <div id="logged-in-cta" class="hidden">
+              <div class="detail-qty-row">
+                <span class="detail-qty-label">Quantity:</span>
+                <div class="detail-qty-control">
+                  <button class="detail-qty-btn" id="qty-minus" aria-label="Decrease">&#8722;</button>
+                  <div class="detail-qty-display" id="qty-display">1</div>
+                  <button class="detail-qty-btn" id="qty-plus" aria-label="Increase">+</button>
+                </div>
+                <span id="qty-stock-hint" style="font-size:12px;color:#4b5563;"></span>
+              </div>
+
+              <div class="detail-cta">
+                <button id="add-to-cart-btn" class="btn btn-accent" onclick="addToCartFromDetail()">
+                  <span data-icon="cart" data-size="16"></span>
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+
+            <!-- Feature chips -->
+            <div class="detail-features">
+              <div class="detail-feature">
+                <span data-icon="shield" data-size="16"></span>
+                Authentic guarantee
+              </div>
+              <div class="detail-feature">
+                <span data-icon="rocket" data-size="16"></span>
+                Fast delivery
+              </div>
+              <div class="detail-feature">
+                <span data-icon="headset" data-size="16"></span>
+                24/7 support
+              </div>
+              <div class="detail-feature">
+                <span data-icon="check" data-size="16"></span>
+                Easy returns
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Not Found State -->
+      <div id="not-found-state" class="hidden">
+        <div class="empty-state">
+          <div class="empty-icon" data-icon="box" data-size="32"></div>
+          <h4>Product Not Found</h4>
+          <p>This product doesn't exist or may have been removed.</p>
+          <a href="products.html" class="btn btn-accent" style="margin-top:8px;">Back to Products</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="footer-logo"><span class="dash"></span> 7amo Store</div>
+          <p>Performance sports equipment for everyday athletes — quality gear, straightforward shopping.</p>
+          <div class="social-row">
+            <a href="https://wa.me/201234567890" target="_blank" class="social-link" aria-label="WhatsApp" data-social="whatsapp"><span data-icon="whatsapp" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="Facebook" data-social="facebook"><span data-icon="fb" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="Instagram" data-social="instagram"><span data-icon="ig" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="TikTok" data-social="tiktok"><span data-icon="tiktok" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="Twitter" data-social="twitter"><span data-icon="tw" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="YouTube" data-social="youtube"><span data-icon="youtube" data-size="17"></span></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="cart.html">Cart</a>
+        </div>
+        <div class="footer-column">
+          <h4>Categories</h4>
+          <a href="categories.html">All Categories</a>
+          <a href="categories.html">New Arrivals</a>
+        </div>
+        <div class="footer-column">
+          <h4>Contact</h4>
+          <a href="contact.html">Contact Us</a>
+          <p style="font-size:14px;margin-top:12px;color:#94a3b8;">Fayoum, Egypt</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 7amo Store. All rights reserved.</span>
+        <span>Built for athletes, by athletes.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    let currentProduct = null;
+    let currentQty = 1;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get('id');
+
+      if (!productId) {
+        showState('not-found');
+        return;
+      }
+
+      await loadProduct(productId);
+    });
+
+    /* ---- Load Product from API ---- */
+    async function loadProduct(id) {
+      try {
+        const product = await apiFetch(`/products/${id}`);
+        currentProduct = product;
+        renderProduct(product);
+        showState('content');
+      } catch (err) {
+        console.error(err);
+        showState('not-found');
+      }
+    }
+
+    /* ---- Render Product Details ---- */
+    function renderProduct(p) {
+      // Breadcrumb
+      document.getElementById('breadcrumb-name').textContent = p.name;
+
+      // Update page title
+      document.title = `${p.name} - 7amo Store`;
+
+      // Image
+      const imgWrap = document.getElementById('detail-img-wrap');
+      if (p.image) {
+        imgWrap.innerHTML = `
+          <div class="detail-img-badge">Active</div>
+          <img src="${p.image}" alt="${p.name}">
+        `;
+      } else {
+        imgWrap.innerHTML = `<span data-icon="box" data-size="100"></span>`;
+      }
+
+      // Text
+      document.getElementById('detail-category').textContent = p.category || 'Uncategorized';
+      document.getElementById('detail-name').textContent = p.name;
+      document.getElementById('detail-description').textContent = p.description || 'No description available.';
+      document.getElementById('detail-sku').textContent = p.sku || '—';
+      document.getElementById('detail-cat-meta').textContent = p.category || '—';
+      document.getElementById('detail-price').textContent = `$${parseFloat(p.price).toFixed(2)}`;
+
+      // Stock
+      const stockEl = document.getElementById('detail-stock');
+      if (!p.stock || p.stock === 0) {
+        stockEl.innerHTML = `<span class="stock-out">Out of Stock</span>`;
+      } else if (p.stock <= 10) {
+        stockEl.innerHTML = `<span class="stock-low">Only ${p.stock} left</span>`;
+      } else {
+        stockEl.innerHTML = `<span class="stock-in">In Stock (${p.stock})</span>`;
+      }
+
+      // Old price & discount
+      if (p.oldPrice && p.oldPrice > p.price) {
+        const discPct = Math.round((1 - p.price / p.oldPrice) * 100);
+        document.getElementById('detail-old-price').textContent = `$${parseFloat(p.oldPrice).toFixed(2)}`;
+        document.getElementById('detail-old-price').classList.remove('hidden');
+        document.getElementById('detail-discount').textContent = `-${discPct}%`;
+        document.getElementById('detail-discount').classList.remove('hidden');
+      }
+
+      // Rating stars
+      const rating = p.rating || 5;
+      const starsEl = document.getElementById('detail-stars');
+      starsEl.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('span');
+        star.innerHTML = icon('star', 16);
+        star.style.color = i <= Math.round(rating) ? '#fbbf24' : '#1e293b';
+        starsEl.appendChild(star);
+      }
+      document.getElementById('detail-reviews').textContent =
+        `${rating.toFixed(1)} · ${p.reviews || 0} reviews`;
+
+      // Show correct CTA section based on auth
+      const role = getRole();
+      if (role === 'guest') {
+        document.getElementById('guest-cta-box').classList.remove('hidden');
+      } else {
+        document.getElementById('logged-in-cta').classList.remove('hidden');
+        setupQtyControls(p.stock);
+      }
+
+      renderInlineIcons();
+    }
+
+    /* ---- Qty Controls ---- */
+    function setupQtyControls(maxStock) {
+      const minusBtn = document.getElementById('qty-minus');
+      const plusBtn  = document.getElementById('qty-plus');
+      const display  = document.getElementById('qty-display');
+      const hint     = document.getElementById('qty-stock-hint');
+
+      if (maxStock && maxStock <= 10) {
+        hint.textContent = `Max: ${maxStock}`;
+      }
+
+      minusBtn.addEventListener('click', () => {
+        if (currentQty > 1) {
+          currentQty--;
+          display.textContent = currentQty;
+        }
+      });
+
+      plusBtn.addEventListener('click', () => {
+        const max = maxStock || 999;
+        if (currentQty < max) {
+          currentQty++;
+          display.textContent = currentQty;
+        } else {
+          showToast(`Only ${max} units available`, 'error');
+        }
+      });
+    }
+
+    /* ---- Add to Cart ---- */
+    function addToCartFromDetail() {
+      if (!currentProduct) return;
+
+      const p = currentProduct;
+      const qty = currentQty;
+
+      let cart = getCart();
+      const existing = cart.find(item => item.id === p._id);
+      if (existing) {
+        existing.quantity += qty;
+      } else {
+        cart.push({
+          id: p._id,
+          name: p.name,
+          price: parseFloat(p.price),
+          sku: p.sku,
+          image: p.image || '',
+          quantity: qty
+        });
+      }
+      saveCart(cart);
+
+      // Visual feedback on button
+      const btn = document.getElementById('add-to-cart-btn');
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = `${icon('check', 16)} Added!`;
+      btn.style.background = '#16a34a';
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.style.background = '';
+        renderInlineIcons();
+      }, 1500);
+
+      showToast(`${qty}x ${p.name} added to cart!`);
+    }
+
+    /* ---- UI Helpers ---- */
+    function showState(state) {
+      document.getElementById('loading-state').classList.add('hidden');
+      document.getElementById('product-content').classList.add('hidden');
+      document.getElementById('not-found-state').classList.add('hidden');
+
+      if (state === 'content') {
+        document.getElementById('product-content').classList.remove('hidden');
+      } else if (state === 'not-found') {
+        document.getElementById('not-found-state').classList.remove('hidden');
+      }
+    }
+  </script>
+  <div class="creator-credit"><span>Made by</span> <strong>Mohamed Ibrahim</strong></div>
+</body>
+</html>
+
+

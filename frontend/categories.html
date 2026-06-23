@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categories - 7amo Store</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+   /* =========================
+   CATEGORY CARD
+========================= */
+
+.category-card {
+    background: #0b1220;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: .35s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.category-card:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 20px 45px rgba(0,0,0,.35);
+    border-color: rgba(34,197,94,.35);
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.category-card-img-wrapper{
+    position: relative;
+    width:100%;
+    height:240px;
+    overflow:hidden;
+    background:#111827;
+}
+
+.category-card-img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    transition:.6s ease;
+    display:block;
+}
+
+.category-card:hover .category-card-img{
+    transform:scale(1.08);
+}
+
+/* طبقة فوق الصورة */
+
+.category-card-img-wrapper::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.45),
+        rgba(0,0,0,0)
+    );
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.category-content{
+    padding:24px;
+}
+
+.category-title{
+    color:#fff;
+    font-size:1.6rem;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.category-desc{
+    color:#9ca3af;
+    line-height:1.7;
+    margin-bottom:22px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.category-btn{
+    width:100%;
+    height:52px;
+    border-radius:12px;
+}
+.category-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:30px;
+}
+.category-card-icon{
+    width:100%;
+    height:240px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111827;
+    color:var(--accent);
+}
+.category-card{
+    height:100%;
+}
+
+.category-content{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+}
+
+.category-btn{
+    margin-top:auto;
+}
+
+.category-card:hover .category-card-img{
+    transform:scale(1.1);
+    filter:brightness(1.08);
+}
+.category-title{
+    transition:.3s;
+}
+
+.category-card:hover .category-title{
+    color:var(--accent);
+}
+  </style>
+</head>
+<body>
+
+  <!-- ========== Header Navbar ========== -->
+  <header class="navbar">
+    <div class="container">
+      <div class="nav-row">
+        <a href="index.html" class="logo">
+          <span class="dash"></span>
+          7amo Store
+        </a>
+        
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="categories.html" class="active">Categories</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+
+        <div class="nav-right">
+          <div class="search-box">
+            <span data-icon="search" data-size="16"></span>
+            <input type="text" placeholder="Search products..." aria-label="Search products">
+          </div>
+
+          <a href="cart.html" class="icon-btn cart-btn" aria-label="Cart">
+            <span data-icon="cart" data-size="18"></span>
+            <span id="cart-badge-count" class="cart-badge hidden">0</span>
+          </a>
+
+          <!-- Dynamic User Auth Container -->
+          <div id="auth-nav-container">
+            <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+          </div>
+
+          <button class="icon-btn mobile-toggle" aria-label="Menu">
+            <span data-icon="menu" data-size="18"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+      <div class="container">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="categories.html" class="active">Categories</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== Categories Grid Section ========== -->
+  <section class="section">
+    <div class="container">
+      <div style="margin-bottom: 48px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <span class="eyebrow">Browse</span>
+          <h1 class="section-title">Categories</h1>
+          <p style="color: var(--text-muted); font-size: 15px;">Organized categories designed to easily locate your gear.</p>
+        </div>
+      </div>
+
+      <!-- Categories Container (Empty by default, loaded via JS) -->
+      <div id="categories-container" class="category-grid hidden">
+        <!-- Loaded dynamically from safeStorage -->
+      </div>
+
+      <!-- Empty State View (Visible by default) -->
+      <div id="empty-container" class="empty-state">
+        <div class="empty-icon" data-icon="layers" data-size="28"></div>
+        <h4>No Categories Available</h4>
+        <p>There are no product categories published in the database yet. Log in as Administrator to add sports categories.</p>
+        <div style="margin-top: 8px;">
+          <a href="dashboard.html" class="btn btn-accent btn-sm" style="font-weight: 700;">Go to Dashboard</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <span class="dash"></span>
+            7amo Store
+          </div>
+          <p>Performance sports equipment for everyday athletes — quality gear, straightforward shopping.</p>
+          <div class="social-row">
+            <a href="https://wa.me/201149519736" target="_blank" class="social-link" aria-label="WhatsApp" data-social="whatsapp"><span data-icon="whatsapp" data-size="17"></span></a>
+            <a href="https://www.facebook.com/mohamed.ibrahim.339565" class="social-link" aria-label="Facebook" data-social="facebook"><span data-icon="fb" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="Instagram" data-social="instagram"><span data-icon="ig" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="TikTok" data-social="tiktok"><span data-icon="tiktok" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="Twitter" data-social="twitter"><span data-icon="tw" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="YouTube" data-social="youtube"><span data-icon="youtube" data-size="17"></span></a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="cart.html">Cart</a>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Categories</h4>
+          <a href="categories.html">All Categories</a>
+          <a href="categories.html">New Arrivals</a>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Contact</h4>
+          <a href="contact.html">Contact Us</a>
+          <p style="font-size: 14px; margin-top: 12px; color: #94a3b8;">Fayoum, Egypt</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 7amo Store. All rights reserved.</span>
+        <span>Built for athletes, by athletes.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCategories();
+    });
+
+    async function renderCategories() {
+      const categoriesContainer = document.getElementById('categories-container');
+      const emptyContainer = document.getElementById('empty-container');
+      
+      let categories = [];
+      try {
+        categories = await apiFetch('/categories');
+      } catch(e) {
+        console.error('Failed to load categories', e);
+        categories = [];
+      }
+
+      if (categories.length === 0) {
+        categoriesContainer.classList.add('hidden');
+        emptyContainer.classList.remove('hidden');
+      } else {
+        categoriesContainer.classList.remove('hidden');
+        emptyContainer.classList.add('hidden');
+
+        categoriesContainer.innerHTML = '';
+        categories.forEach(cat => {
+          const card = document.createElement('div');
+          card.className = 'category-card';
+
+         const headerHtml = `
+<div class="category-card-img-wrapper">
+
+${
+cat.image
+? `
+<img
+class="category-card-img"
+src="${cat.image}"
+alt="${escapeHtml(cat.name)}"
+loading="lazy"
+onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden');">
+<div class="category-card-icon hidden" data-icon="layers" data-size="36"></div>
+`
+:
+`<div class="category-card-icon" data-icon="layers" data-size="36"></div>`
+}
+
+</div>
+`;
+          card.innerHTML = `
+${headerHtml}
+
+<div class="category-content">
+
+<h3 class="category-title">
+${escapeHtml(cat.name)}
+</h3>
+
+<p class="category-desc">
+${escapeHtml(cat.description || "No description provided.")}
+</p>
+
+<a
+href="products.html?category=${encodeURIComponent(cat.name)}"
+class="btn btn-outline category-btn">
+
+Explore Category
+<span data-icon="chevRight" data-size="15"></span>
+
+</a>
+
+</div>
+`;
+          categoriesContainer.appendChild(card);
+        });
+
+        // Render SVGs inside dynamically created nodes
+        renderInlineIcons();
+      }
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+  <div class="creator-credit"><span>Made by</span> <strong>Mohamed Ibrahim</strong></div>
+</body>
+</html>
+
+

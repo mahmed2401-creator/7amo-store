@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - 7amo Store</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========== Header Navbar ========== -->
+  <header class="navbar">
+    <div class="container">
+      <div class="nav-row">
+        <a href="index.html" class="logo">
+          <span class="dash"></span>
+          7amo Store
+        </a>
+        
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="categories.html">Categories</a>
+          <a href="contact.html" class="active">Contact</a>
+        </nav>
+
+        <div class="nav-right">
+          <div class="search-box">
+            <span data-icon="search" data-size="16"></span>
+            <input type="text" placeholder="Search products..." aria-label="Search products">
+          </div>
+
+          <a href="cart.html" class="icon-btn cart-btn" aria-label="Cart">
+            <span data-icon="cart" data-size="18"></span>
+            <span id="cart-badge-count" class="cart-badge hidden">0</span>
+          </a>
+
+          <!-- Dynamic User Auth Container -->
+          <div id="auth-nav-container">
+            <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+          </div>
+
+          <button class="icon-btn mobile-toggle" aria-label="Menu">
+            <span data-icon="menu" data-size="18"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+      <div class="container">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="categories.html">Categories</a>
+        <a href="contact.html" class="active">Contact</a>
+        <a href="login.html">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== Contact Section ========== -->
+  <section class="section">
+    <div class="container">
+      <div style="margin-bottom: 48px;">
+        <span class="eyebrow">Get in touch</span>
+        <h1 class="section-title">Contact Us</h1>
+        <p style="color: var(--text-muted); font-size: 15px;">Have questions about gear, orders, or sizing? Drop us a message.</p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Contact Form Card -->
+        <div class="card">
+          <form id="contact-form" onsubmit="handleContactSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-name">Full Name</label>
+                <input id="contact-name" type="text" placeholder="John Doe" required>
+              </div>
+              <div class="form-group">
+                <label for="contact-email">Email Address</label>
+                <input id="contact-email" type="email" placeholder="john@example.com" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="contact-subject">Subject</label>
+              <input id="contact-subject" type="text" placeholder="e.g. Question about Dumbbell weight" required>
+            </div>
+            <div class="form-group">
+              <label for="contact-message">Message</label>
+              <textarea id="contact-message" rows="6" placeholder="Write your message here..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+              Send Message <span data-icon="rocket" data-size="14"></span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Contact Info Column -->
+        <div class="info-column">
+          <!-- Visual Map Placeholder -->
+          <div class="map-placeholder">
+            <span data-icon="pin" data-size="28" style="color: var(--accent-hover);"></span>
+            <span>Fayoum, Egypt</span>
+          </div>
+
+          <!-- Info Details Card -->
+          <div class="card" style="padding: 24px;">
+            <h3 style="font-size: 16px; margin-bottom: 20px;">Store Information</h3>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="info-card">
+                <span data-icon="pin" data-size="18"></span>
+                <div>
+                  <h4>Address</h4>
+                  <p>Al-Fayoum City, Egypt</p>
+                </div>
+              </div>
+              <div class="info-card">
+                <span data-icon="phone" data-size="18"></span>
+                <div>
+                  <h4>Phone</h4>
+                  <p>+20 1149519736</p>
+                </div>
+              </div>
+              <a href="https://wa.me/201149519736" target="_blank" class="info-card" style="text-decoration: none; cursor: pointer;">
+                <span data-icon="whatsapp" data-size="18" style="color: #25D366;"></span>
+                <div>
+                  <h4>WhatsApp</h4>
+                  <p style="color: #25D366; font-weight: 600;">Chat with us now</p>
+                </div>
+              </a>
+              <div class="info-card">
+                <span data-icon="mail" data-size="18"></span>
+                <div>
+                  <h4>Email Support</h4>
+                  <p>support@7amostore.com</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Media Card -->
+          <div class="card" style="padding: 24px;">
+            <h3 style="font-size: 16px; margin-bottom: 16px;">Follow Us</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Stay updated with the latest products, deals, and sports content.</p>
+            <div class="social-row" style="gap: 10px;">
+              <a href="https://wa.me/201149519736" target="_blank" class="social-link" aria-label="WhatsApp" data-social="whatsapp"><span data-icon="whatsapp" data-size="17"></span></a>
+              <a href="https://www.facebook.com/mohamed.ibrahim.339565" class="social-link" aria-label="Facebook" data-social="facebook"><span data-icon="fb" data-size="17"></span></a>
+              <a href="#" class="social-link" aria-label="Instagram" data-social="instagram"><span data-icon="ig" data-size="17"></span></a>
+              <a href="#" class="social-link" aria-label="TikTok" data-social="tiktok"><span data-icon="tiktok" data-size="17"></span></a>
+              <a href="#" class="social-link" aria-label="Twitter" data-social="twitter"><span data-icon="tw" data-size="17"></span></a>
+              <a href="#" class="social-link" aria-label="YouTube" data-social="youtube"><span data-icon="youtube" data-size="17"></span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== Floating WhatsApp Button ========== -->
+  <a href="https://wa.me/201149519736" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
+    <span data-icon="whatsapp" data-size="26"></span>
+    <span class="whatsapp-float-tooltip">Chat with us!</span>
+  </a>
+
+  <style>
+    .whatsapp-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #25D366;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45), 0 0 12px rgba(37, 211, 102, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: whatsappPulse 3s ease-in-out infinite;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 28px rgba(37, 211, 102, 0.55), 0 0 18px rgba(37, 211, 102, 0.3);
+      background: #22c35e;
+    }
+
+    .whatsapp-float:active {
+      transform: scale(1.05);
+    }
+
+    @keyframes whatsappPulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45), 0 0 12px rgba(37, 211, 102, 0.2); }
+      50% { box-shadow: 0 4px 28px rgba(37, 211, 102, 0.6), 0 0 20px rgba(37, 211, 102, 0.35); }
+    }
+
+    .whatsapp-float-tooltip {
+      position: absolute;
+      right: 68px;
+      white-space: nowrap;
+      background: var(--card);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      transform: translateX(8px);
+      transition: all 0.25s ease;
+      pointer-events: none;
+    }
+
+    .whatsapp-float:hover .whatsapp-float-tooltip {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  </style>
+
+
+  <!-- ========== Footer ========== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <span class="dash"></span>
+            7amo Store
+          </div>
+          <p>Performance sports equipment for everyday athletes — quality gear, straightforward shopping.</p>
+          <div class="social-row">
+            <a href="https://wa.me/20119519736" target="_blank" class="social-link" aria-label="WhatsApp" data-social="whatsapp"><span data-icon="whatsapp" data-size="17"></span></a>
+            <a href="https://www.facebook.com/mohamed.ibrahim.339565" class="social-link" aria-label="Facebook" data-social="facebook"><span data-icon="fb" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="Instagram" data-social="instagram"><span data-icon="ig" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="TikTok" data-social="tiktok"><span data-icon="tiktok" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="Twitter" data-social="twitter"><span data-icon="tw" data-size="17"></span></a>
+            <a href="#" class="social-link" aria-label="YouTube" data-social="youtube"><span data-icon="youtube" data-size="17"></span></a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="cart.html">Cart</a>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Categories</h4>
+          <a href="categories.html">All Categories</a>
+          <a href="categories.html">New Arrivals</a>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Contact</h4>
+          <a href="contact.html">Contact Us</a>
+          <p style="font-size: 14px; margin-top: 12px; color: #94a3b8;">Fayoum, Egypt</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 7amo Store. All rights reserved.</span>
+        <span>Built for athletes, by athletes.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script>
+    async function handleContactSubmit(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const subject = document.getElementById('contact-subject').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
+
+      const btn = event.target.querySelector('button[type="submit"]');
+      const originalBtnText = btn.innerHTML;
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = 'Sending...';
+
+        await apiFetch('/messages', {
+          method: 'POST',
+          body: JSON.stringify({ name, email, subject, message })
+        });
+
+        showToast("Message sent! We'll reply within 24 hours.");
+        document.getElementById('contact-form').reset();
+      } catch (err) {
+        showToast(err.message || 'Failed to send message', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalBtnText;
+      }
+    }
+  </script>
+  <div class="creator-credit"><span>Made by</span> <strong>Mohamed Ibrahim</strong></div>
+</body>
+</html>
+
+

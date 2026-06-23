@@ -1,0 +1,187 @@
+{
+  "categories": [
+    {
+      "name": "Footwear",
+      "description": "Training, running, and court shoes for daily sport performance.",
+      "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&q=80"
+    },
+    {
+      "name": "Apparel",
+      "description": "Breathable sportswear for gym, running, and outdoor workouts.",
+      "image": "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=900&q=80"
+    },
+    {
+      "name": "Training",
+      "description": "Strength and conditioning equipment for home and gym training.",
+      "image": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=900&q=80"
+    },
+    {
+      "name": "Accessories",
+      "description": "Useful training accessories for mobility, recovery, and daily workouts.",
+      "image": "https://images.unsplash.com/photo-1517344884509-a0c97ec11bcc?w=900&q=80"
+    },
+    {
+      "name": "Hydration",
+      "description": "Bottles and hydration gear for training sessions and match days.",
+      "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=900&q=80"
+    }
+  ],
+  "products": [
+    {
+      "name": "Surge Runner Pro",
+      "sku": "FT-001",
+      "price": 148,
+      "stock": 24,
+      "category": "Footwear",
+      "description": "Lightweight running shoes built for daily road training and responsive movement.",
+      "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&q=80",
+      "oldPrice": 185,
+      "rating": 4.8,
+      "reviews": 212,
+      "badge": "sale"
+    },
+    {
+      "name": "Trail Grip Mid Shoes",
+      "sku": "FT-002",
+      "price": 172,
+      "stock": 12,
+      "category": "Footwear",
+      "description": "Supportive trail shoes with strong grip for outdoor runs and mixed terrain.",
+      "image": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=900&q=80",
+      "oldPrice": 0,
+      "rating": 4.7,
+      "reviews": 156,
+      "badge": "low"
+    },
+    {
+      "name": "Court Flex Sneakers",
+      "sku": "FT-003",
+      "price": 134,
+      "stock": 18,
+      "category": "Footwear",
+      "description": "Comfortable court sneakers for indoor sessions, casual training, and active days.",
+      "image": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=900&q=80",
+      "oldPrice": 0,
+      "rating": 4.6,
+      "reviews": 143,
+      "badge": "new"
+    },
+    {
+      "name": "Aero Compression Tee",
+      "sku": "AP-001",
+      "price": 54,
+      "stock": 60,
+      "category": "Apparel",
+      "description": "Breathable compression t-shirt made for gym workouts and high-intensity training.",
+      "image": "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=900&q=80",
+      "oldPrice": 0,
+      "rating": 4.6,
+      "reviews": 98,
+      "badge": "new"
+    },
+    {
+      "name": "Momentum Training Joggers",
+      "sku": "AP-002",
+      "price": 68,
+      "stock": 34,
+      "category": "Apparel",
+      "description": "Flexible training joggers with a clean athletic fit for workouts and recovery.",
+      "image": "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=900&q=80",
+      "oldPrice": 88,
+      "rating": 4.7,
+      "reviews": 289,
+      "badge": "sale"
+    },
+    {
+      "name": "Performance Gym Hoodie",
+      "sku": "AP-003",
+      "price": 82,
+      "stock": 27,
+      "category": "Apparel",
+      "description": "Soft training hoodie for warmups, outdoor walks, and cool-weather sessions.",
+      "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=900&q=80",
+      "oldPrice": 0,
+      "rating": 4.5,
+      "reviews": 74,
+      "badge": ""
+    },
+    {
+      "name": "Iron Grip Lifting Gloves",
+      "sku": "TR-001",
+      "price": 28,
+      "stock": 85,
+      "category": "Training",
+      "description": "Durable lifting gloves designed to improve grip and protect hands during strength training.",
+      "image": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=900&q=80",
+      "oldPrice": 0,
+      "rating": 4.5,
+      "reviews": 511,
+      "badge": ""
+    },
+    {
+      "name": "Adjustable Dumbbell Set",
+      "sku": "TR-002",
+      "price": 210,
+      "stock": 10,
+      "category": "Training",
+      "description": "Compact adjustable dumbbell set for strength workouts at home or in the gym.",
+      "image": "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=900&q=80",
+      "oldPrice": 250,
+      "rating": 4.9,
+      "reviews": 132,
+      "badge": "low"
+    },
+    {
+      "name": "Core Stability Yoga Mat",
+      "sku": "TR-003",
+      "price": 42,
+      "stock": 48,
+      "category": "Training",
+      "description": "Non-slip mat for mobility work, stretching, yoga, and floor exercises.",
+      "image": "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=900&q=80",
+      "oldPrice": 0,
+      "rating": 4.8,
+      "reviews": 204,
+      "badge": "new"
+    },
+    {
+      "name": "Velocity Resistance Bands",
+      "sku": "AC-001",
+      "price": 32,
+      "stock": 75,
+      "category": "Accessories",
+      "description": "Multi-resistance band set for warmups, strength circuits, rehab, and travel workouts.",
+      "image": "https://images.unsplash.com/photo-1517344884509-a0c97ec11bcc?w=900&q=80",
+      "oldPrice": 42,
+      "rating": 4.9,
+      "reviews": 340,
+      "badge": "sale"
+    },
+    {
+      "name": "Speed Rope Pro",
+      "sku": "AC-002",
+      "price": 24,
+      "stock": 90,
+      "category": "Accessories",
+      "description": "Fast skipping rope for conditioning, boxing drills, and cardio sessions.",
+      "image": "https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=900&q=80",
+      "oldPrice": 0,
+      "rating": 4.4,
+      "reviews": 88,
+      "badge": ""
+    },
+    {
+      "name": "Glacier Steel Bottle 1L",
+      "sku": "HY-001",
+      "price": 36,
+      "stock": 65,
+      "category": "Hydration",
+      "description": "Reusable insulated steel bottle for training, commuting, and daily hydration.",
+      "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=900&q=80",
+      "oldPrice": 0,
+      "rating": 4.9,
+      "reviews": 677,
+      "badge": ""
+    }
+  ]
+}

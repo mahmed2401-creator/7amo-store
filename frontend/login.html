@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - 7amo Store</title>
+  <meta name="description" content="Sign in to your 7amo Store account to track orders, manage your sports gear wishlist, and enjoy a personalized shopping experience.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background: var(--bg);
+    }
+
+    /* ========== Auth Page Layout ========== */
+    .auth-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    @media (max-width: 960px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+      }
+      .auth-visual-panel {
+        display: none;
+      }
+    }
+
+    /* ---- Visual (Left) Panel ---- */
+    .auth-visual-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 48px;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(34, 197, 94, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+        linear-gradient(160deg, #0c1220 0%, #090d16 100%);
+      overflow: hidden;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .auth-visual-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(135deg, rgba(34,197,94,0.02) 0px, rgba(34,197,94,0.02) 1px, transparent 1px, transparent 40px);
+      pointer-events: none;
+    }
+
+    /* Floating orbs */
+    .auth-visual-panel::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      right: -80px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.10) 0%, transparent 70%);
+      pointer-events: none;
+      animation: orbFloat 8s ease-in-out infinite;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-30px, -25px); }
+    }
+
+    .auth-visual-content {
+      position: relative;
+      z-index: 2;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 440px;
+    }
+
+    .auth-visual-content h2 {
+      font-size: clamp(32px, 3.5vw, 44px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    .auth-visual-content h2 em {
+      font-style: normal;
+      color: var(--accent);
+      text-shadow: 0 0 25px var(--accent-glow);
+    }
+
+    .auth-visual-content > p {
+      font-size: 16px;
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+
+    .auth-features {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .auth-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.02);
+      transition: var(--transition);
+    }
+
+    .auth-feature-item:hover {
+      background: rgba(34, 197, 94, 0.05);
+      border-color: rgba(34, 197, 94, 0.15);
+    }
+
+    .auth-feature-icon {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      background: rgba(34, 197, 94, 0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+    }
+
+    .auth-feature-item span:last-child {
+      font-size: 14px;
+      font-weight: 500;
+      color: #cbd5e1;
+    }
+
+    .auth-visual-footer {
+      position: relative;
+      z-index: 2;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    /* ---- Form (Right) Panel ---- */
+    .auth-form-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 32px;
+      background: var(--primary);
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      animation: fadeSlideIn 0.5s ease-out;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile logo - only shown on small screens */
+    .auth-mobile-logo {
+      display: none;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 960px) {
+      .auth-mobile-logo {
+        display: flex;
+      }
+    }
+
+    .auth-card-header {
+      margin-bottom: 36px;
+    }
+
+    .auth-card-header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .auth-card-header p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Form Styles */
+    .auth-form .form-group {
+      margin-bottom: 22px;
+    }
+
+    .auth-form .form-group label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .auth-form .form-group input {
+      width: 100%;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 13px 16px;
+      color: #ffffff;
+      font-size: 14px;
+      font-family: inherit;
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .auth-form .form-group input::placeholder {
+      color: #4b5563;
+    }
+
+    .auth-form .form-group input:focus {
+      border-color: var(--accent);
+      background: rgba(34, 197, 94, 0.04);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+
+    .auth-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .auth-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .auth-checkbox input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .auth-forgot-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .auth-forgot-link:hover {
+      color: var(--accent-hover);
+    }
+
+    /* Submit Button */
+    .auth-submit {
+      width: 100%;
+      padding: 14px 24px;
+      border: none;
+      border-radius: var(--radius);
+      background: var(--accent);
+      color: var(--primary);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 14px var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .auth-submit:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .auth-submit:active {
+      transform: translateY(0) scale(0.99);
+    }
+
+    /* Divider */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 28px 0;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .auth-divider span {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* Demo Buttons */
+    .demo-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .demo-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1.5px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      color: #ffffff;
+    }
+
+    .demo-btn:hover {
+      border-color: var(--accent);
+      background: rgba(34, 197, 94, 0.06);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.12);
+    }
+
+    .demo-btn.customer {
+      border-color: rgba(34, 197, 94, 0.25);
+      background: rgba(34, 197, 94, 0.04);
+    }
+
+    /* Footer Link */
+    .auth-footer {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .auth-footer a {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .auth-footer a:hover {
+      color: var(--accent-hover);
+      text-decoration: underline;
+    }
+
+    .auth-back-link {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 13px;
+    }
+
+    .auth-back-link a {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .auth-back-link a:hover {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+
+    <!-- ========== Left Panel (Visual Branding) ========== -->
+    <div class="auth-visual-panel">
+
+      <!-- Logo -->
+      <a href="index.html" class="logo" style="color: #ffffff; position: relative; z-index: 2;">
+        <span class="dash"></span>
+        7amo Store
+      </a>
+
+      <!-- Content -->
+      <div class="auth-visual-content">
+        <h2>Welcome<br>back, <em>champ</em>.</h2>
+        <p>Sign in to your account to track orders, manage your wishlist, and unlock exclusive member deals on sports gear.</p>
+
+        <div class="auth-features">
+          <div class="auth-feature-item">
+            <div class="auth-feature-icon">
+              <span data-icon="box" data-size="18"></span>
+            </div>
+            <span>Track and view orders in real-time</span>
+          </div>
+          <div class="auth-feature-item">
+            <div class="auth-feature-icon">
+              <span data-icon="tag" data-size="18"></span>
+            </div>
+            <span>Access premium member-only catalog</span>
+          </div>
+          <div class="auth-feature-item">
+            <div class="auth-feature-icon">
+              <span data-icon="shield" data-size="18"></span>
+            </div>
+            <span>Secure checkout with saved payment</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="auth-visual-footer">
+        &copy; 2026 7amo Store. All rights reserved.
+      </div>
+
+    </div>
+
+    <!-- ========== Right Panel (Sign In Form) ========== -->
+    <div class="auth-form-panel">
+      <div class="auth-card">
+
+        <!-- Mobile-only logo -->
+        <a href="index.html" class="logo auth-mobile-logo" style="color: #ffffff;">
+          <span class="dash"></span>
+          7amo Store
+        </a>
+
+        <div class="auth-card-header">
+          <h1>Sign In</h1>
+          <p>Enter your credentials to access your dashboard.</p>
+        </div>
+
+        <form id="login-form" class="auth-form" onsubmit="handleLoginSubmit(event)">
+          <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <input id="login-email" type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" placeholder="••••••••" required>
+          </div>
+
+          <div class="auth-options">
+            <label class="auth-checkbox">
+              <input type="checkbox"> Remember me
+            </label>
+            <a href="#" class="auth-forgot-link">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="auth-submit">
+            Sign In
+            <span data-icon="chevRight" data-size="16"></span>
+          </button>
+        </form>
+
+
+
+        <!-- Register CTA -->
+        <div class="auth-footer">
+          Don't have an account? <a href="register.html">Create Account</a>
+        </div>
+
+        <div class="auth-back-link">
+          <a href="index.html">&larr; Back to Store</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/common.js"></script>
+  <script>
+    async function handleLoginSubmit(event) {
+      event.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const submitBtn = document.querySelector('.auth-submit');
+      const originalText = submitBtn.innerHTML;
+
+      try {
+        submitBtn.innerHTML = 'Signing In...';
+        submitBtn.disabled = true;
+
+        const data = await apiFetch('/users/login', {
+          method: 'POST',
+          body: JSON.stringify({ email, password })
+        });
+
+        login(data);
+        showToast("Logged in successfully!");
+        
+        setTimeout(() => {
+          if (data.role === 'admin') {
+            window.location.href = 'dashboard.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+        }, 1000);
+
+      } catch (error) {
+        showToast(error.message, 'error');
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    }
+
+
+  </script>
+  <div class="creator-credit"><span>Made by</span> <strong>Mohamed Ibrahim</strong></div>
+</body>
+</html>
+
+
