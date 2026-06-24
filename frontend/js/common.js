@@ -1,6 +1,6 @@
 // Common UI Utilities for 7amo Store
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://7amo-store.vercel.app';
 
 async function apiFetch(endpoint, options = {}) {
   const token = safeStorage.get('token');
