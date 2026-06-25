@@ -133,6 +133,35 @@
 .category-card:hover .category-title{
     color:var(--accent);
 }
+
+@media (max-width: 720px) {
+    .category-grid{
+        grid-template-columns:1fr;
+        gap:18px;
+    }
+
+    .category-card-img-wrapper,
+    .category-card-icon{
+        height:180px;
+    }
+
+    .category-content{
+        padding:18px;
+    }
+
+    .category-title{
+        font-size:1.25rem;
+    }
+
+    .category-desc{
+        font-size:14px;
+        margin-bottom:16px;
+    }
+
+    .category-btn{
+        height:46px;
+    }
+}
   </style>
 </head>
 <body>

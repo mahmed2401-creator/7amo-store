@@ -279,14 +279,14 @@ function updateAuthNavbar() {
     `;
   } else {
     const user = getLoggedInUser();
-    const name = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.name : (role === 'admin' ? 'Admin' : 'Customer');
+    const name = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.name || user.email : '';
     const dashboardBtn = role === 'admin' ? `<a href="dashboard.html" class="btn btn-primary btn-sm">Dashboard</a>` : '';
     
     authNavContainer.innerHTML = `
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span style="font-size:14px; font-weight:600; color:var(--primary-light);">Hi, ${name}</span>
+      <div class="auth-actions">
+        <span class="auth-greeting">Hi${name ? `, ${name}` : ''}</span>
         ${dashboardBtn}
-        <button class="btn btn-ghost btn-sm" onclick="logout()" style="display:flex;align-items:center;gap:6px;">
+        <button class="btn btn-ghost btn-sm" onclick="logout()">
           ${icon('logout', 16)} Logout
         </button>
       </div>
