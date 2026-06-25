@@ -14,11 +14,6 @@ const path = require('path');
 // Load env vars
 dotenv.config();
 
-// Connect to database. In Vercel this runs inside the serverless function and is cached by Mongoose.
-connectDB().catch((error) => {
-  console.error('Database connection failed:', error.message);
-});
-
 const app = express();
 
 // Middleware
@@ -28,6 +23,15 @@ app.use(express.json());
 // Basic Route
 app.get('/', (req, res) => {
   res.send('7amo-store API is running...');
+});
+
+app.use('/api', async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    res.status(500).json({ message: 'Database connection failed', error: error.message });
+  }
 });
 
 // Routes
