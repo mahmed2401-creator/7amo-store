@@ -81,6 +81,8 @@ const safeStorage = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('error', handleBrokenImage, true);
+
   // Mobile Nav Menu Toggle
   const mobileToggleBtn = document.querySelector('.mobile-toggle');
   const mobileMenu = document.querySelector('.mobile-menu');
@@ -114,6 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize Auth navbar components
   updateAuthNavbar();
 });
+
+function handleBrokenImage(event) {
+  const img = event.target;
+  if (!(img instanceof HTMLImageElement)) return;
+
+  const visualWrap = img.closest('.product-thumb, .cart-item-image, .category-card, .detail-image-wrap');
+  if (!visualWrap) return;
+
+  visualWrap.style.padding = '';
+  visualWrap.innerHTML = icon('box', 72);
+}
 
 // Helper: SVG Icons Generator
 function icon(name, size = 20) {
