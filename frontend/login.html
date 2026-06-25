@@ -501,7 +501,7 @@
   <script>
     async function handleLoginSubmit(event) {
       event.preventDefault();
-      const email = document.getElementById('login-email').value;
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
       const password = document.getElementById('login-password').value;
       const submitBtn = document.querySelector('.auth-submit');
       const originalText = submitBtn.innerHTML;

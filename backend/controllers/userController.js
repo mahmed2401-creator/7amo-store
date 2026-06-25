@@ -5,7 +5,12 @@ const generateToken = require('../utils/generateToken');
 // @route   POST /api/users/login
 // @access  Public
 const authUser = async (req, res) => {
-  const { email, password } = req.body;
+  const email = String(req.body.email || '').trim().toLowerCase();
+  const password = String(req.body.password || '');
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
 
   try {
     const user = await User.findOne({ email });
@@ -31,7 +36,14 @@ const authUser = async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const firstName = String(req.body.firstName || '').trim();
+  const lastName = String(req.body.lastName || '').trim();
+  const email = String(req.body.email || '').trim().toLowerCase();
+  const password = String(req.body.password || '');
+
+  if (!firstName || !lastName || !email || !password) {
+    return res.status(400).json({ message: 'Please complete all account fields' });
+  }
 
   try {
     const userExists = await User.findOne({ email });
@@ -168,4 +180,3 @@ module.exports = {
   deleteUser,
   updateUserRole,
 };
-

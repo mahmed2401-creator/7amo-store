@@ -554,7 +554,7 @@
       const firstName = nameParts[0];
       const lastName = nameParts.slice(1).join(' ') || '.'; // Add fallback if only one name is entered
 
-      const email = document.getElementById('reg-email').value;
+      const email = document.getElementById('reg-email').value.trim().toLowerCase();
       const password = document.getElementById('reg-password').value;
       const confirm = document.getElementById('reg-confirm-password').value;
       const submitBtn = document.getElementById('register-submit-btn');
