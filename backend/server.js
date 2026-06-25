@@ -14,20 +14,15 @@ const path = require('path');
 // Load env vars
 dotenv.config();
 
-// Connect to database
-connectDB();
+// Connect to database. In Vercel this runs inside the serverless function and is cached by Mongoose.
+connectDB().catch((error) => {
+  console.error('Database connection failed:', error.message);
+});
 
 const app = express();
 
 // Middleware
-app.use(
-  cors({
-    origin: [
-      'https://7amo-store-frontend.vercel.app'
-    ],
-    credentials: true
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 // Basic Route
@@ -49,5 +44,13 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 // Error Middleware
 app.use(notFound);
 app.use(errorHandler);
+
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+
+  app.listen(PORT, () => {
+    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  });
+}
 
 module.exports = app;
