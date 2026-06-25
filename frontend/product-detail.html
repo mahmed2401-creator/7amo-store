@@ -610,10 +610,11 @@
 
       // Image
       const imgWrap = document.getElementById('detail-img-wrap');
-      if (p.image) {
+      const imageUrl = resolveAssetUrl(p.image);
+      if (imageUrl) {
         imgWrap.innerHTML = `
           <div class="detail-img-badge">Active</div>
-          <img src="${p.image}" alt="${p.name}">
+          <img src="${imageUrl}" alt="${p.name}" loading="eager" decoding="async">
         `;
       } else {
         imgWrap.innerHTML = `<span data-icon="box" data-size="100"></span>`;
@@ -717,7 +718,7 @@
           name: p.name,
           price: parseFloat(p.price),
           sku: p.sku,
-          image: p.image || '',
+          image: imageUrl || p.image || '',
           quantity: qty
         });
       }

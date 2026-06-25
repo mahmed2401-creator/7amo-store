@@ -322,16 +322,17 @@
         categories.forEach(cat => {
           const card = document.createElement('div');
           card.className = 'category-card';
+          const imageUrl = resolveAssetUrl(cat.image);
 
          const headerHtml = `
 <div class="category-card-img-wrapper">
 
 ${
-cat.image
+imageUrl
 ? `
 <img
 class="category-card-img"
-src="${cat.image}"
+src="${imageUrl}"
 alt="${escapeHtml(cat.name)}"
 loading="lazy"
 onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden');">

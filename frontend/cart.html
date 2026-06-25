@@ -734,8 +734,9 @@
         const itemTotal = price * quantity;
         subtotal += itemTotal;
 
-        const thumbHtml = item.image
-          ? `<img src="${item.image}" alt="${item.name}">`
+        const imageUrl = resolveAssetUrl(item.image);
+        const thumbHtml = imageUrl
+          ? `<img src="${imageUrl}" alt="${item.name}" loading="lazy">`
           : icon('box', 28);
 
         const row = document.createElement('div');
