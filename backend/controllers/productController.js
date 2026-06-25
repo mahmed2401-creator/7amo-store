@@ -4,6 +4,7 @@ const { normalizeProductImage } = require('../utils/productImages');
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
+    res.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');
     res.json(products.map(normalizeProductImage));
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
@@ -14,6 +15,7 @@ const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (product) {
+      res.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');
       res.json(normalizeProductImage(product));
     } else {
       res.status(404).json({ message: 'Product not found' });

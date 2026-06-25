@@ -2,6 +2,15 @@ const Order = require('../models/Order');
 const Product = require('../models/Product');
 const sendTelegramOrder = require('../utils/sendTelegramOrder');
 
+function withTimeout(promise, timeoutMs, message) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(message)), timeoutMs);
+    }),
+  ]);
+}
+
 const addOrderItems = async (req, res) => {
   const { orderItems, shippingAddress, paymentMethod } = req.body;
 
@@ -44,9 +53,15 @@ const addOrderItems = async (req, res) => {
       const createdOrder = await order.save();
       const populatedOrder = await Order.findById(createdOrder._id).populate('user', 'firstName lastName email');
 
-      sendTelegramOrder(populatedOrder).catch((error) => {
-        console.error(error.message);
-      });
+      try {
+        await withTimeout(
+          sendTelegramOrder(populatedOrder),
+          5000,
+          'Telegram notification timed out after 5 seconds'
+        );
+      } catch (telegramError) {
+        console.error(telegramError.message);
+      }
 
       res.status(201).json(createdOrder);
     } catch (error) {

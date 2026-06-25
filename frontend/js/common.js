@@ -204,6 +204,28 @@ function saveCart(cart) {
   updateCartBadge();
 }
 
+function clearAllCarts() {
+  saveCart([]);
+
+  try {
+    Object.keys(localStorage)
+      .filter((key) => key === 'cart_guest' || key.startsWith('cart_'))
+      .forEach((key) => localStorage.setItem(key, '[]'));
+  } catch (e) {
+    try {
+      const data = JSON.parse(window.name || '{}');
+      Object.keys(data)
+        .filter((key) => key === 'cart_guest' || key.startsWith('cart_'))
+        .forEach((key) => { data[key] = '[]'; });
+      window.name = JSON.stringify(data);
+    } catch (err) {
+      // Ignore storage cleanup failures; the active cart was already cleared.
+    }
+  }
+
+  updateCartBadge();
+}
+
 function updateCartBadge() {
   const badge = document.getElementById('cart-badge-count');
   if (badge) {

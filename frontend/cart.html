@@ -796,7 +796,7 @@
 
     function clearCart() {
       if (!confirm('Are you sure you want to clear your entire cart?')) return;
-      saveCart([]);
+      clearAllCarts();
       renderCartItems();
       showToast('Cart cleared');
     }
@@ -837,7 +837,7 @@
 
       try {
         await apiFetch('/orders', { method: 'POST', body: JSON.stringify(orderData) });
-        saveCart([]);
+        clearAllCarts();
         renderCartItems();
         showToast('🎉 Order placed successfully! Thank you.');
       } catch (err) {

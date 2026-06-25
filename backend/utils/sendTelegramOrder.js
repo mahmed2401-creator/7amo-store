@@ -13,7 +13,7 @@ function buildOrderMessage(order) {
   const customer = order.shippingAddress || {};
   const user = order.user || {};
   const items = (order.orderItems || [])
-    .map((item) => `• ${escapeHtml(item.name)} x${item.qty} - ${formatMoney(item.price * item.qty)}`)
+    .map((item) => `- ${escapeHtml(item.name)} x${item.qty} - ${formatMoney(item.price * item.qty)}`)
     .join('\n');
 
   return [
@@ -62,6 +62,8 @@ async function sendTelegramOrder(order) {
     const details = await response.text();
     throw new Error(`Telegram notification failed: ${details}`);
   }
+
+  console.log(`Telegram order notification sent for order ${order._id}`);
 }
 
 module.exports = sendTelegramOrder;
