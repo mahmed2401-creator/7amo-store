@@ -4,6 +4,14 @@ const API_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
   ? 'http://localhost:5000/api'
   : '/api';
 
+function resolveAssetUrl(url) {
+  if (!url) return '';
+  if (url.startsWith('/api/') && API_URL !== '/api') {
+    return `${API_URL}${url.slice(4)}`;
+  }
+  return url;
+}
+
 async function apiFetch(endpoint, options = {}) {
   const token = safeStorage.get('token');
   const headers = {
@@ -24,10 +32,18 @@ async function apiFetch(endpoint, options = {}) {
     headers
   });
 
-  const data = await response.json();
+  const rawText = await response.text();
+  let data = null;
+
+  try {
+    data = rawText ? JSON.parse(rawText) : null;
+  } catch (error) {
+    const preview = rawText.slice(0, 80).replace(/\s+/g, ' ');
+    throw new Error(`API returned a non-JSON response (${response.status}). ${preview}`);
+  }
   
   if (!response.ok) {
-    throw new Error(data.message || 'Something went wrong');
+    throw new Error((data && data.message) || 'Something went wrong');
   }
   
   return data;

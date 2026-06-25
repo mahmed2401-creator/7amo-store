@@ -1,5 +1,5 @@
 const Product = require('../models/Product');
-const { normalizeProductImage } = require('../utils/productImages');
+const { buildProductSvg, normalizeProductImage } = require('../utils/productImages');
 
 const getProducts = async (req, res) => {
   try {
@@ -20,6 +20,25 @@ const getProductById = async (req, res) => {
     } else {
       res.status(404).json({ message: 'Product not found' });
     }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
+const getProductImage = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).catch(() => null);
+
+    if (!product) {
+      return res.status(404).type('image/svg+xml').send(buildProductSvg({
+        name: '7amo Store',
+        category: 'Sports',
+        sku: req.params.id,
+      }));
+    }
+
+    res.set('Cache-Control', 'public, max-age=86400, s-maxage=604800, immutable');
+    res.type('image/svg+xml').send(buildProductSvg(product));
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
@@ -184,6 +203,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
   getProducts,
   getProductById,
+  getProductImage,
   seedProducts,
   createProduct,
   deleteProduct

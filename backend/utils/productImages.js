@@ -65,12 +65,15 @@ function normalizeProductImage(product) {
   const plainProduct = typeof product.toObject === 'function' ? product.toObject() : { ...product };
 
   if (isBrokenUploadImage(plainProduct.image)) {
-    plainProduct.image = svgToDataUri(buildProductSvg(plainProduct));
+    const id = plainProduct._id || plainProduct.id || encodeURIComponent(plainProduct.sku || plainProduct.name || 'placeholder');
+    plainProduct.image = `/api/products/${id}/image.svg`;
   }
 
   return plainProduct;
 }
 
 module.exports = {
+  buildProductSvg,
   normalizeProductImage,
+  svgToDataUri,
 };
