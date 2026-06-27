@@ -713,6 +713,7 @@
       if (existing) {
         existing.quantity += qty;
       } else {
+        const imageUrl = resolveAssetUrl(p.image);
         cart.push({
           id: p._id,
           name: p.name,
