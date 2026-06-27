@@ -1131,6 +1131,7 @@
     let products   = [];
     let categories = [];
     let users      = [];
+    let editingProductId = null;
     const ORDER_STATUS_OPTIONS = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
     const PAYMENT_STATUS_OPTIONS = ['pending', 'paid'];
     const ORDER_SEEN_COUNT_KEY = 'dashboardSeenOrdersCount';
@@ -1285,6 +1286,9 @@
           <td><span class="badge badge-gray">${p.stock} units</span></td>
           <td><span class="badge badge-blue">${escapeHtml(p.category)}</span></td>
           <td>
+            <button onclick="openDashModal('product', '${p._id}')" class="btn btn-sm" style="color:var(--accent); border:1px solid rgba(34,197,94,0.25); background:transparent; padding:5px 10px; font-size:12px; margin-right:6px;">
+              ${icon('edit', 12)} Edit
+            </button>
             <button onclick="deleteProduct('${p._id}')" class="btn btn-sm" style="color:#ef4444; border:1px solid rgba(239,68,68,0.2); background:transparent; padding:5px 10px; font-size:12px;">
               ${icon('trash', 12)} Delete
             </button>
@@ -1556,13 +1560,22 @@
         image: window._uploadedImages['p'] || null
       };
       try {
-        await apiFetch('/products', {
-          method: 'POST',
+        const endpoint = editingProductId ? '/products/' + editingProductId : '/products';
+        const method = editingProductId ? 'PUT' : 'POST';
+        const savedProduct = await apiFetch(endpoint, {
+          method,
           body: JSON.stringify(newProduct)
         });
-        await loadData(); renderDashboard(); closeDashModal();
+
+        if (editingProductId) {
+          products = products.map((product) => product._id === editingProductId ? { ...product, ...savedProduct } : product);
+        } else {
+          products = [savedProduct, ...products];
+        }
+
+        renderDashboard(); closeDashModal();
         document.getElementById('modal-form-product').reset();
-        showToast('Product added successfully!');
+        showToast(editingProductId ? 'Product updated successfully!' : 'Product added successfully!');
       } catch(e) { showToast(e.message, 'error'); }
     }
 
@@ -1605,11 +1618,17 @@
 
     async function deleteProduct(id) {
       if (!confirm('Delete this product?')) return;
+      const previousProducts = [...products];
+      products = products.filter((product) => product._id !== id);
+      renderDashboard();
       try {
         await apiFetch('/products/' + id, { method: 'DELETE' });
-        await loadData(); renderDashboard();
         showToast('Product deleted.');
-      } catch(e) { showToast(e.message, 'error'); }
+      } catch(e) {
+        products = previousProducts;
+        renderDashboard();
+        showToast(e.message, 'error');
+      }
     }
 
     async function updateOrderStatus(selectEl) {
@@ -1744,9 +1763,13 @@
       clearImage('p');
       clearImage('cat');
       if (type === 'product') {
-        document.getElementById('modal-title').textContent = 'Add New Product';
+        editingProductId = typeof extraData === 'string' ? extraData : null;
+        const editingProduct = editingProductId ? products.find((product) => product._id === editingProductId) : null;
+
+        document.getElementById('modal-title').textContent = editingProduct ? 'Update Product' : 'Add New Product';
         document.getElementById('modal-form-product').classList.remove('hidden');
         document.getElementById('modal-submit-btn').setAttribute('form', 'modal-form-product');
+        document.getElementById('modal-submit-btn').textContent = editingProduct ? 'Update Product' : 'Save';
         const sel = document.getElementById('p-category');
         sel.innerHTML = '<option value="">Select category</option>';
         categories.forEach(c => {
@@ -1754,15 +1777,40 @@
           opt.value = c.name; opt.textContent = c.name;
           sel.appendChild(opt);
         });
+
+        const form = document.getElementById('modal-form-product');
+        form.reset();
+
+        if (editingProduct) {
+          document.getElementById('p-name').value = editingProduct.name || '';
+          document.getElementById('p-sku').value = editingProduct.sku || '';
+          document.getElementById('p-price').value = editingProduct.price ?? 0;
+          document.getElementById('p-stock').value = editingProduct.stock ?? 0;
+          document.getElementById('p-category').value = editingProduct.category || '';
+          document.getElementById('p-desc').value = editingProduct.description || '';
+
+          const imageUrl = resolveAssetUrl(editingProduct.image);
+          if (imageUrl) {
+            window._uploadedImages.p = editingProduct.image && !String(editingProduct.image).includes('/api/products/')
+              ? editingProduct.image
+              : null;
+            showImagePreview('p', imageUrl);
+          }
+        }
       } else if (type === 'category') {
+        editingProductId = null;
         document.getElementById('modal-title').textContent = 'Add Category';
         document.getElementById('modal-form-category').classList.remove('hidden');
         document.getElementById('modal-submit-btn').setAttribute('form', 'modal-form-category');
+        document.getElementById('modal-submit-btn').textContent = 'Save';
       } else if (type === 'user') {
+        editingProductId = null;
         document.getElementById('modal-title').textContent = 'Add New User';
         document.getElementById('modal-form-user').classList.remove('hidden');
         document.getElementById('modal-submit-btn').setAttribute('form', 'modal-form-user');
+        document.getElementById('modal-submit-btn').textContent = 'Save';
       } else if (type === 'message') {
+        editingProductId = null;
         document.getElementById('modal-title').textContent = 'Message Details';
         document.getElementById('modal-view-message').classList.remove('hidden');
         document.getElementById('modal-submit-btn').classList.add('hidden');
@@ -1786,6 +1834,8 @@
     }
 
     function closeDashModal() {
+      editingProductId = null;
+      document.getElementById('modal-submit-btn').textContent = 'Save';
       document.getElementById('dash-modal').classList.remove('open');
     }
 

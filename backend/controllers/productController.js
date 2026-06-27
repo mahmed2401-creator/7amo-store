@@ -182,6 +182,35 @@ const createProduct = async (req, res) => {
   }
 };
 
+// @desc    Update a product
+// @route   PUT /api/products/:id
+// @access  Private/Admin
+const updateProduct = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    product.name = req.body.name ?? product.name;
+    product.sku = req.body.sku ?? product.sku;
+    product.price = req.body.price ?? product.price;
+    product.stock = req.body.stock ?? product.stock;
+    product.category = req.body.category ?? product.category;
+    product.description = req.body.description ?? product.description;
+
+    if (req.body.image !== undefined && req.body.image !== null) {
+      product.image = req.body.image;
+    }
+
+    const updatedProduct = await product.save();
+    res.json(updatedProduct);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
 // @desc    Delete a product
 // @route   DELETE /api/products/:id
 // @access  Private/Admin
@@ -206,5 +235,6 @@ module.exports = {
   getProductImage,
   seedProducts,
   createProduct,
+  updateProduct,
   deleteProduct
 };
